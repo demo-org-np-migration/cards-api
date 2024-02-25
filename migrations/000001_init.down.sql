@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS authorizations;
+DROP TABLE IF EXISTS cards;
