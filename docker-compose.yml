@@ -1,0 +1,36 @@
+# Local dev only. Postgres here starts empty — cards-api runs its own
+# migrations at boot (migrations/000001_init.up.sql), so this is enough on
+# its own to bring cards-api up and hit /health with real tables.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: cauri
+      POSTGRES_PASSWORD: cauri
+      POSTGRES_DB: cards
+    ports:
+      - "5432:5432"
+    volumes:
+      - cards-api-postgres:/var/lib/postgresql/data
+
+  cards-api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SERVICE_NAME: cards-api
+      ENV: staging
+      PORT: 8080
+      LOG_LEVEL: debug
+      DATABASE_URL: postgres://cauri:cauri@postgres:5432/cards
+      KEYCLOAK_ISSUER: http://keycloak.platform.svc:8080/realms/cauri-staging
+      KEYCLOAK_CLIENT_ID: cards-api
+      KEYCLOAK_CLIENT_SECRET: dummy-local-secret
+      LEDGER_CORE_URL: http://ledger-core:8080
+      CARDNET_URL: http://sandbox.cardnet-processor.io
+      CARDNET_API_KEY: dummy-local-key
+    depends_on:
+      - postgres
+
+volumes:
+  cards-api-postgres:
