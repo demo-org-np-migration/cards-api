@@ -1,0 +1,8 @@
+apiVersion: v2
+name: cards-api
+description: Helm chart for cards-api, card issuance and authorization against Cardnet.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+maintainers:
+  - name: payments
