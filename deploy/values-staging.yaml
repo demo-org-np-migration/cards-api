@@ -1,0 +1,27 @@
+replicaCount: 1
+
+env:
+  ENV: staging
+  LOG_LEVEL: info
+  KEYCLOAK_ISSUER: http://keycloak.platform.svc:8080/realms/cauri-staging
+  KEYCLOAK_CLIENT_ID: cards-api
+  LEDGER_CORE_URL: http://ledger-core.staging.svc:8080
+  CARDNET_URL: http://sandbox.cardnet-processor.io
+
+postgresSecret:
+  create: false
+  name: postgres-credentials
+  host: postgres.staging.svc
+  port: 5432
+  database: cards
+
+keycloakClientSecret:
+  name: keycloak-client-cards-api
+  key: client_secret
+
+cardnetSecret:
+  name: cards-api-secrets
+  key: cardnet_api_key
+
+serviceMonitor:
+  enabled: true
