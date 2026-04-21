@@ -22,7 +22,7 @@ services:
       ENV: staging
       PORT: 8080
       LOG_LEVEL: debug
-      DATABASE_URL: postgres://cauri:cauri@postgres:5432/cards
+      DATABASE_URL: postgres://cauri:cauri@postgres:5432/cards?sslmode=disable
       KEYCLOAK_ISSUER: http://keycloak.platform.svc:8080/realms/cauri-staging
       KEYCLOAK_CLIENT_ID: cards-api
       KEYCLOAK_CLIENT_SECRET: dummy-local-secret

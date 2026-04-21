@@ -66,8 +66,13 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.postgresSecret.name }}
                   key: password
+            # sslmode=disable: postgres.<env>.svc doesn't terminate TLS
+            # (in-cluster only). pgx defaults to sslmode=prefer and falls
+            # back on its own, but golang-migrate's driver (lib/pq) doesn't
+            # — it errors out with "SSL is not enabled on the server"
+            # unless told explicitly not to try.
             - name: DATABASE_URL
-              value: "postgres://$(DB_USER):$(DB_PASSWORD)@{{ .Values.postgresSecret.host }}:{{ .Values.postgresSecret.port }}/{{ .Values.postgresSecret.database }}"
+              value: "postgres://$(DB_USER):$(DB_PASSWORD)@{{ .Values.postgresSecret.host }}:{{ .Values.postgresSecret.port }}/{{ .Values.postgresSecret.database }}?sslmode=disable"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:
